@@ -1,0 +1,1 @@
+If you wish not to type tailwind  html with tailwind css classes on your own, here is the code for the next lecture
