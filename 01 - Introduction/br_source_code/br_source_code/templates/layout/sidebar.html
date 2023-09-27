@@ -1,0 +1,33 @@
+{% url 'home' as path_to_home %}
+{% url 'about' as path_to_about %}
+{% url 'books:main' as path_to_books %}
+{% url 'rentals:main' as path_to_rentals %}
+
+<aside class="hidden md:block sticky bg-slate-900 h-screen text-white w-full pt-24 text-sm">
+    <ul>
+        <li class="mb-6 mx-auto">
+            <a href="{{path_to_home}}" class="grid h-12 place-items-center cursor-pointer hover:text-slate-200 duration-300 text-slate-500 {% if request.path == path_to_home %}text-white{% endif %}">
+                <i class="fa-solid fa-chart-pie fa-xl"></i>
+                <p>dashboard</p>
+            </a>
+        </li>
+        <li class="mb-6 mx-auto">
+            <a href="{{path_to_books}}" class="grid h-12 place-items-center cursor-pointer hover:text-slate-200 duration-300 text-slate-500 {% if 'books' == request.resolver_match.view_name|slice:'0:5' %}text-white{% endif %}">
+                <i class="fa-solid fa-book fa-xl"></i>
+                <p>books</p>
+            </a>
+        </li>
+        <li class="mb-6 mx-auto">
+            <a href="{{path_to_rentals}}" class="grid h-12 place-items-center cursor-pointer hover:text-slate-200 duration-300 text-slate-500 {% if 'rentals' == request.resolver_match.view_name|slice:'0:7'%}text-white{% endif %}">
+                <i class="fa-solid fa-bookmark fa-xl"></i>
+                <p>rentals</p>
+            </a>
+        </li>
+        <li class="mb-6 mx-auto">
+            <a href="{{path_to_about}}" class="grid h-12 place-items-center cursor-pointer hover:text-slate-200 duration-300 text-slate-500 {% if request.path == path_to_about %}text-white{% endif %}">
+                <i class="fa-solid fa-circle-question fa-xl"></i>
+                <p>about</p>
+            </a>
+        </li>
+    </ul>
+</aside>

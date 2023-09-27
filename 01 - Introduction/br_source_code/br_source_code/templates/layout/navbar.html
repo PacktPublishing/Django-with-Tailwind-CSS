@@ -1,0 +1,31 @@
+{% load static %}
+<nav class="fixed flex items-center h-16 bg-gradient-to-r from-cyan-500 to-blue-700 mb-2 w-full z-10 text-white">
+    <div class="flex justify-between items-center w-full px-4 py-3">
+        <div>
+            <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" class="h-12" alt="book rent logo"></a>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="flex items-center">
+            <div class="relative" id="dropdown-box">
+                <button id="btn-dropdown" class="bg-white bg-opacity-10 rounded drop-shadow-lg p-3 hover:opacity-80 focus:ring-4 focus:ring-blue-300" type="button">menu &nbsp; <i class="fa-solid fa-caret-down"></i></button>
+
+                <div id="dropdown" class="hidden absolute right-0 bg-white shadow min-w-full rounded">
+                    <ul class="py-1 text-sm text-slate-700">
+                        <li>
+                            <div class="block py-2 px-4 border-b border-slate-200">{{request.user.username}}</div>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}" class="block py-2 px-4 hover:bg-gray-100">logout</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="bg-white rounded-full ml-3">
+                <svg width="55" height="55" data-jdenticon-value="{{request.user.username}}"></svg>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</nav>

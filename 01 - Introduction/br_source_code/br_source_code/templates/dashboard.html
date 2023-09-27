@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scripts %}
+    <script src="{% static 'dashboard.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+dashboard
+{% endblock title %}
+
+{% block content %}
+
+<div class="max-h-[640px] overflow-y-auto">
+    <div class="flex">
+        <div class="w-1/2 p-6">
+            <div class="border border-slate-200 dark:border-slate-500 rounded-lg drop-shadow-xl p-3 bg-s;ate-100 dark:bg-slate-700">
+                <div id="desc-box1"></div>
+                <canvas id="chart-box1"></canvas>
+            </div>
+        </div>
+        <div class="w-1/2 p-6">
+            <div class="border border-slate-200 dark:border-slate-500 rounded-lg drop-shadow-xl p-3 bg-s;ate-100 dark:bg-slate-700">
+                <div id="desc-box4"></div>
+                <canvas id="chart-box4"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="w-1/2 p-6">
+            <div class="border border-slate-200 dark:border-slate-500 rounded-lg drop-shadow-xl p-3 bg-s;ate-100 dark:bg-slate-700">
+                <div id="desc-box2"></div>
+                <canvas id="chart-box2"></canvas>
+            </div>
+        </div>
+        <div class="w-1/2 p-6">
+            <div class="border border-slate-200 dark:border-slate-500 rounded-lg drop-shadow-xl p-3 bg-s;ate-100 dark:bg-slate-700">
+                <div id="desc-box3"></div>
+                <canvas id="chart-box3"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

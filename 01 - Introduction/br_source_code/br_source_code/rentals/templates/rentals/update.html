@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+update status
+{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'info' in message.tags %}
+            {% include 'components/alert.html' with is_info=True title="Success" body=message %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% include 'components/header.html' with title="Update rental status" description=object.book.id is_go_back=True %}
+
+{% if object.is_closed %}
+    The rental status is closed
+{% else %}
+    <form method="POST" class="w-1/2">
+        {% csrf_token %}
+        <div class="mb-2">
+            <label for="{{ form.status.id_for_label }}" class="block font-bold text-slate-800 dark:text-slate-300">status:</label>
+            {{ form.status|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }} 
+        </div>
+        <button type="submit" class="px-3 py-2 text-white bg-sky-500 hover:bg-sky-600 rounded-xl mt-3">
+            update
+        </button>
+    </form>
+{% endif %}
+
+
+{% endblock content %}

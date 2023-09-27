@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block scripts %}
+    <script src="{% static 'books/main.js' %}" defer></script>
+    <script src="{% static 'js/form_modal.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}book title list{% endblock title %}
+
+{% block content %}
+    {% comment %} {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <div class="font-bold text-xl text-red-400">{{ error }}</div>
+        {% endfor %}
+    {% endif %} {% endcomment %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'info' in message.tags %}
+                {% include 'components/alert.html' with is_info=True title="Success" body=message %}
+            {% elif 'error' in message.tags %}
+                {% include 'components/alert.html' with is_info=False title="Error" body=message %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- form modal -->
+    <div class="hidden relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="form-modal">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center" id="backdrop">
+                <div class="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all my-8">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="bg-white dark:text-white dark:bg-slate-300 pt-5 pb-4 px-8">
+                            <div class="mt-3 text-left">
+                                <h3 class="text-2xl font-medium leading-6 text-gray-900" id="modal-title">
+                                    add new book title
+                                </h3>
+                                <div class="mt-3">                            
+                                    <div class="mb-2">
+                                        <label for="{{ form.title.id_for_label }}" class="block font-bold text-slate-800 dark:text-slate-300">title:</label>
+                                        {{ form.title|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }} 
+                                        {% if form.title.errors %}
+                                            {% for error in form.title.errors  %}
+                                                <div class="my-1 text-red-500 font-bold text-sm">{{ error }}</div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                            
+                                    <div class="mb-2">
+                                        <label for="{{ form.author.id_for_label }}" class="block font-bold text-slate-800 dark:text-slate-300">author:</label>
+                                        {{ form.author|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }} 
+                                    </div>
+                            
+                                    <div class="mb-2">
+                                        <label for="{{ form.publisher.id_for_label }}" class="block font-bold text-slate-800 dark:text-slate-300">publisher:</label>
+                                        {{ form.publisher|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }} 
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:text-white dark:bg-slate-400 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+        
+                            <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                                save
+                            </button>
+
+                            <button type="button" id="cancel-btn" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 border border-red-600 rounded mr-3">
+                                cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'components/header.html' with title="Book titles" description="List of all the book titles available" is_form_available=True icon="<i class='fa-solid fa-plus'></i>" %}
+
+    {% for letter in letters %}
+        <a href="{% url 'books:main' letter|lower %}" class="{% if letter == selected_letter|upper%}underline{% endif %}">{{ letter }}</a>
+    {% endfor %}
+
+    {% if qs %}
+        <ul>
+            {% for el in qs %}
+                <li><a href="{{el.get_absolute_url}}">{{el.title}}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div>no book titles staring with <b>{{selected_letter}}</b></div>
+    {% endif %}
+
+{% endblock content %}

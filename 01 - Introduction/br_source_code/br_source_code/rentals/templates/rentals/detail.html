@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load get_status_text %}
+
+{% block title %}
+rental history
+{% endblock title %}
+
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'info' in message.tags %}
+            {% include 'components/alert.html' with is_info=True title="Success" body=message %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+{% include 'components/header.html' with title=object.title.title description=object.title.publisher.name %}
+
+{% if object %}
+    {% if object_list %}
+    <div class="overflow-x-auto"> 
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                <tr class="border">
+                    <th scope="col" class="py-3 px-6">
+                        #
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        customer
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        id
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        isbn
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        status
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        start
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        end
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        return
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        is closed
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in object_list %}
+                <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td scope="row" class="py-4 px-6 font-medium text-gray-900 dark:text-white">
+                        {{forloop.counter}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{obj.customer.username}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{obj.book.id}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{obj.book.isbn}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{obj.status|get_status_text}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{obj.rent_start_date}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{obj.rent_end_date}}
+                    </td>
+                    <td class="py-4 px-6">
+                        {% if obj.return_date %}{{obj.return_date}}{% else %}-{% endif %}
+                    </td>
+                    <td class="py-4 px-6">
+                        {% if obj.is_closed %}
+                            <i class="fa-solid fa-check fa-lg text-teal-300"></i>
+                        {% else %}
+                            <i class="fa-solid fa-xmark fa-lg text-red-500"></i>
+                        {% endif %}
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-6 h-12">
+            <a href="{% url 'rentals:download' book_id %}" class="p-3 bg-rose-400 hover:bg-rose-500 text-white rounded-lg">download</a>
+        </div>
+    {% else %}
+        no rental data
+    {% endif %}
+{% else %}
+    no book found
+{% endif %}
+
+{% endblock content %}

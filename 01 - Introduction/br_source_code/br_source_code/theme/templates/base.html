@@ -1,0 +1,61 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="{% if request.session.is_dark_mode %}dark{% endif %} ">
+	<head>
+    <title>Django Tailwind | {% block title %}{% endblock title %}</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		
+		<!-- font awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		
+		<!-- jquery -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+		<!-- jdenticon -->
+		<script src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js" async
+				integrity="sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M"
+				crossorigin="anonymous">
+		</script>
+
+		<!--chart js-->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+		<!-- custom js-->
+		<script src="{% static 'main.js' %}" defer></script>
+		<script src="{% static 'navbar.js' %}" defer></script>
+		{% block scripts %}
+		{% endblock scripts %}
+		
+		{% tailwind_css %}
+	</head>
+
+	<body class="bg-gray-50 dark:bg-slate-800 dark:text-white">
+		{% include 'layout/navbar.html' %}
+		<div class="grid grid-cols-12">
+			{% if request.user.is_authenticated %}
+				<div class="col-span-1">
+					{% include 'layout/sidebar.html' %}
+				</div>
+			{% endif %}
+
+			<div class="{% if request.user.is_authenticated %}col-span-11 {% else %} col-span-12 {% endif %}">
+				<div class="pt-20 px-6">
+					{% if request.user.is_authenticated %}
+						<a href="{% url 'change' %}"
+						class="fixed top-[150px] right-0 p-3 rounded-l-lg
+						bg-slate-200 hover:bg-slate-300 dark:bg-yellow-400
+						dark:hover:bg-yellow-500 text-slate-900 drop-shadow-md transition-all
+						"
+						>
+						<i class="fa-solid {% if not request.session.is_dark_mode %}fa-moon{% else %}fa-sun{% endif %} fa-xl"></i>
+						</a>
+					{% endif %}
+					{% block content %}
+					{% endblock content %}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}book title detail{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'info' in message.tags %}
+            {% include 'components/alert.html' with is_info=True title="Success" body=message %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% include 'components/header.html' with title=object.title description='book title details' is_go_back=True %}
+
+<div class="overflow-x-auto">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+            <tr class="border">
+                <th scope="col" class="py-3 px-6">
+                    #
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    title
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    book id
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    isbn
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    qr code
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    status
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    available
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    select
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in object.books %}
+            <tr class="border-b dark:bg-gray-800 dark:border-gray-700 {% if not obj.is_read  %}font-bold{% endif %}">
+                <td scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{forloop.counter}}
+                </td>
+                <td class="py-4 px-6">
+                    {{obj.title.title}}
+                </td>
+                <td class="py-4 px-6">
+                    {{obj.id}}
+                </td>
+                <td class="py-4 px-6">
+                    {{obj.isbn}}
+                </td>
+                <td class="py-4 px-6">
+                    <img src="{{obj.qr_code.url}}" alt="{{obj.isbn}}" class="h-12 w-12 rounded">
+                </td>
+                <td class="py-4 px-6">
+                    {% if obj.status %}{{obj.status}}{% else %}never rented{% endif %}
+                </td>
+                <td class="py-4 px-6">
+                    {% if obj.is_available %}
+                        <i class="fa-solid fa-check text-green-500"></i>
+                    {% else %}
+                        <i class="fa-solid fa-xmark text-red-500"></i>
+                    {% endif %}
+                </td>
+                <td class="py-4 px-6">
+                    {% include 'components/buttons/select_button.html' with href=obj.get_absolute_url %}
+                </td>
+                <td class="py-4 px-6">
+                    {% include 'components/buttons/delete_button.html' with href=obj.delete_object %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% comment %} {% if is_paginated %}
+    <div class="mt-3">
+        <ul class="inline-flex items-center -space-x-px">
+
+            {% if page_obj.has_previous %}
+                <li>
+                    <a {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}"{% else %} href="" {% endif %} class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">                    
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li><a class="px-3 py-2 leading-tight text-gray-500 dark:text-gray-100 bg-gray-200 dark:bg-gray-700 border border-gray-300 hover:bg-white hover:text-gray-700  dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                    <li><a class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li>
+                    <a {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}"{% else %} href="" {% endif %} class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">                    
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}  {% endcomment %}
+
+{% endblock content %}

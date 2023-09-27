@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}new{% endblock title %}
+
+{% block content %}
+{% include 'components/header.html' with title="Add new rental" description=book_id is_go_back=True %}
+<form method="POST" class="w-1/2">
+    {% csrf_token %}
+    <div class="mb-2">
+        <label for="{{ form.customer.id_for_label }}" class="block font-bold text-slate-800 dark:text-slate-300">Customer:</label>
+        {{ form.customer|add_class:'bg-slate-100 dark:bg-slate-300 text-slate-800 rounded p-2 w-full' }} 
+    </div>
+    <button type="submit" class="p-3 bg-sky-500 hover:bg-sky-600 rounded-lg text-white">rent</button>
+</form>
+{% endblock content %}

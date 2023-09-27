@@ -1,0 +1,21 @@
+<div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-xl mb-10 h-[80px] flex justify-between items-center px-6" id="head">
+    <div class="flex-col">
+        <div class="text-2xl">{{ title }}</div>
+        <div class="text-md">{{ description }}</div>
+    </div>
+    <div>
+        {% if is_form_available %}
+            <div>
+                <button class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 p-3 rounded-xl text-xl" id="open-modal-btn">{{ icon }}</button>
+            </div>
+        {% endif %}
+
+        {% if is_go_back %}
+        <div class="{% if is_form_available %}ml-3{% endif %}">
+            <button class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 p-3 rounded-xl text-xl" id="go-back-btn">
+                <i class="fa-solid fa-left-long"></i>
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>

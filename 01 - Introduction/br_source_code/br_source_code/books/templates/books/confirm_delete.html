@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}delete book?{% endblock title %}
+
+{% block content %}
+<div class="w-full bg-white dark:bg-slate-700 shadow p-3 rounded">
+    <h1 class="text-2xl  mb-4">Are you sure you want to delete <span class="font-semibold">{{object.isbn}}</span> ?</h1>
+    <div class="mb-4">Deleteing this item is permanent and cannot be undone!</div>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold rounded py-2 px-4">delete</button>
+    </form>
+</div>
+{% endblock content %}
